@@ -50,25 +50,25 @@ TrainSphere is a Flask-based web application designed to help users achieve thei
 
  **Steps to Run the Application**
  
- 1️⃣ Clone the Repository
+ 1. Clone the Repository
 ```bash
 git clone https://github.com/your-username/TrainSphere.git
 cd TrainSphere
 ```
- 2️⃣ Set Up a Virtual Environment
+ 2. Set Up a Virtual Environment
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: .\venv\Scripts\activate
 ```
- 3️⃣ Install Dependencies
+ 3. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
- 4️⃣ Run the Application
+ 4. Run the Application
 ```bash
 python app/main.py
 ```
- 5️⃣ Access the Application
+ 5. Access the Application
 Open your browser and navigate to:  
 [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
