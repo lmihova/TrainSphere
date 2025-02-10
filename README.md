@@ -1,15 +1,18 @@
 # TrainSphere
 
 
-# Overview
+## Overview
 TrainSphere is a Flask-based web application designed to help users achieve their fitness goals by providing structured workout plans, progress tracking, and performance insights. The app enables users to log their exercises, track burned calories, and receive customized training recommendations.
 
-# Key Features
+## Key Features
 
 
  Workout Management
+ 
  •	Create and manage personalized workout plans.
+ 
  •	Choose from predefined workout categories (strength, cardio, flexibility, etc.).
+ 
  •	Log training sessions with duration and intensity.
 
 Progress Tracking
