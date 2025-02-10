@@ -7,7 +7,7 @@ TrainSphere is a Flask-based web application designed to help users achieve thei
 ## Key Features
 
 
- Workout Management
+### Workout Management
  
  •	Create and manage personalized workout plans.
  
@@ -15,25 +15,36 @@ TrainSphere is a Flask-based web application designed to help users achieve thei
  
  •	Log training sessions with duration and intensity.
 
-Progress Tracking
+### Progress Tracking
+
 •	Monitor progress through visual data representation.
+
 •	Calculate calories burned and BMI.
+
 •	View daily and weekly workout summaries.
 
-Reports and Data Export
+
+### Reports and Data Export
+
 •	Generate progress reports.
+
 •	Export workout history to CSV or PDF.
 
-Notifications and Reminders
+### Notifications and Reminders
+
 •	Receive automated reminders before scheduled workouts.
+
 •	Get motivational quotes and weather updates to assist in planning.
 
-Secure User Authentication
+### Secure User Authentication
+
 •	Register and log in with hashed passwords.
+
 •	Store user data securely in JSON
 
  
-Installation and Setup
+## Installation and Setup
+
 - Python 3.8 or higher
 - A virtual environment (recommended)
 
