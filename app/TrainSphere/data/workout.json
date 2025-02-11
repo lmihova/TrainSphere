@@ -1,0 +1,20 @@
+[
+    {
+        "username": "john_smith",
+        "workout_type": "Running",
+        "duration": 30,
+        "calories_burned": 300
+    },
+    {
+        "username": "jane_smith",
+        "workout_type": "Yoga",
+        "duration": 45,
+        "calories_burned": 150
+    },
+    {
+        "username": "ivan_ivanov",
+        "workout_type": "Weightlifting",
+        "duration": 60,
+        "calories_burned": 500
+    }
+]

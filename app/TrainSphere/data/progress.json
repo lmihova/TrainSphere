@@ -1,0 +1,18 @@
+{
+    "username": "john_smith",
+    "bmi": 22.86,
+    "target_daily_calories": 3150.0,
+    "macros": {
+        "carbs": 393.75,
+        "protein": 275.63,
+        "fats": 52.5
+    },
+    "workout_history": [
+        {
+            "username": "john_smith",
+            "workout_type": "Running",
+            "duration": 30,
+            "calories_burned": 300.0
+        }
+    ]
+}

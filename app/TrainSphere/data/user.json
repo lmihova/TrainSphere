@@ -1,0 +1,29 @@
+{
+    "john_doe": {
+        "username": "john_smith",
+        "email": "john@example.com",
+        "age": 25,
+        "weight": 70,
+        "height": 1.75,
+        "goal": "muscle gain",
+        "password": "Secure@123"  
+    },
+    "jane_smith": {
+        "username": "jane_smith",
+        "email": "jane@example.com",
+        "age": 30,
+        "weight": 65,
+        "height": 1.68,
+        "goal": "weight loss",
+        "password": "StrongP@ss1"  
+    },
+    "mike_johnson": {
+        "username": "ivan_ivanov",
+        "email": "ivan@example.com",
+        "age": 40,
+        "weight": 85,
+        "height": 1.80,
+        "goal": "maintenance",
+        "password": "FitL1f3!"  
+    }
+}
