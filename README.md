@@ -88,21 +88,37 @@ coverage report -m
 ## Project Structure 
 
 app_3MI0700165/
+
 │
+ 
 ├── main.py               # Main entry point for the Flask app (Move here if needed)
+
 │
+
 ├── src/                  # Application source files
+
 │   ├── __init__.py       # Init file for package management
+
 │   ├── classes/          # Models (User, Workout, etc.)
+
 │   ├── controllers/      # Request handlers (register, login, etc.)
+
 │   ├── services/         # Business logic (calculations, notifications)
+
 │   ├── data/             # JSON/CSV storage
+
 │   ├── tests/            # Unit tests
+
 │
+
 ├── venv/                 # Virtual environment (DO NOT push this to Git)
+
 ├── requirements.txt      # Dependencies
+
 ├── README.md             # Project documentation
+
 └── .gitignore            # Ignore unnecessary files
+
 
 
 
