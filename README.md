@@ -89,7 +89,7 @@ coverage report -m
 ```bash
 app_3MI0700165/
 │
-├── main.py               # ✅ Main entry point for the Flask app (Move here if needed)
+├── main.py               # Main entry point for the Flask app (Move here if needed)
 │
 ├── src/                  # Application source files
 │   ├── __init__.py       # Init file for package management
