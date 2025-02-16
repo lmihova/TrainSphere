@@ -28,7 +28,6 @@ TrainSphere is a Flask-based web application designed to help users achieve thei
 
 -	Generate progress reports.
 
--	Export workout history to CSV or PDF.
 
 ### Notifications and Reminders
 
@@ -52,7 +51,7 @@ TrainSphere is a Flask-based web application designed to help users achieve thei
  
  1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/TrainSphere.git
+git clone https://github.com/lmihova/TrainSphere
 cd TrainSphere
 ```
  2. Set Up a Virtual Environment
@@ -66,7 +65,7 @@ pip install -r requirements.txt
 ```
  4. Run the Application
 ```bash
-python app/main.py
+python src/main.py
 ```
  5. Access the Application
 Open your browser and navigate to:  
@@ -77,7 +76,7 @@ Open your browser and navigate to:
  Coding Test
 Check code style with:
 ```bash
-pylint app/
+pylint src/
 ```
 Test Coverage
 ```bash
@@ -85,5 +84,25 @@ pytest tests/
 coverage run -m pytest tests/
 coverage report -m
 ```
+
+## Project Structure 
+
+app_3MI0700165/
+│
+├── main.py               # Main entry point for the Flask app (Move here if needed)
+│
+├── src/                  # Application source files
+│   ├── __init__.py       # Init file for package management
+│   ├── classes/          # Models (User, Workout, etc.)
+│   ├── controllers/      # Request handlers (register, login, etc.)
+│   ├── services/         # Business logic (calculations, notifications)
+│   ├── data/             # JSON/CSV storage
+│   ├── tests/            # Unit tests
+│
+├── venv/                 # Virtual environment (DO NOT push this to Git)
+├── requirements.txt      # Dependencies
+├── README.md             # Project documentation
+└── .gitignore            # Ignore unnecessary files
+
 
 
