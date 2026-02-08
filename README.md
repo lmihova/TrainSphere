@@ -13,7 +13,7 @@ TrainSphere is a Flask-based fitness tracker web application for logging workout
 
 ## Setup the installation 
 
-### 1) Clone the repository
+1) Clone the repository
 ```bash
 git clone https://github.com/lmihova/TrainSphere.git
 cd TrainSphere
