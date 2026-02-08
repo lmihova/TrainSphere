@@ -1,0 +1,19 @@
+[MASTER]
+jobs=0
+ignore=.venv,__pycache__,.mypy_cache,.pytest_cache
+extension-pkg-whitelist=
+
+[FORMAT]
+max-line-length=100
+
+[MESSAGES CONTROL]
+disable=
+    missing-module-docstring,
+    missing-function-docstring,
+    missing-class-docstring
+
+[DESIGN]
+max-args=10
+max-locals=20
+max-branches=15
+max-statements=60
