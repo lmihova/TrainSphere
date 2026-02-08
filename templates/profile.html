@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Profile | TrainSphere{% endblock %}
+{% block banner_title %}Profile{% endblock %}
+
+{% block content %}
+  <div class="grid">
+    <div class="card">
+      <h2>Personal info</h2>
+      <p class="small">Basic info for your tracker.</p>
+
+      <form method="post">
+        <label>Name</label>
+        <input name="name" value="{{ profile.name if profile else '' }}" required>
+
+        <label>Age</label>
+        <input name="age" type="number" value="{{ profile.age if profile and profile.age is not none else '' }}">
+
+        <label>Height (cm)</label>
+        <input name="height_cm" type="number" value="{{ profile.height_cm if profile and profile.height_cm is not none else '' }}">
+
+        <label>Weight (kg)</label>
+        <input name="weight_kg" type="number" step="0.1" value="{{ profile.weight_kg if profile and profile.weight_kg is not none else '' }}">
+
+        <div style="margin-top:12px;">
+          <button class="btn pink" type="submit">Save</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Goals</h2>
+      <p class="small">Set your targets.</p>
+
+      <form method="post" id="goalsForm">
+        <label>Goal text</label>
+        <input name="goal_text" placeholder="e.g. improve endurance" value="{{ profile.goal_text if profile and profile.goal_text is not none else '' }}">
+
+        <label>Goal weight (kg)</label>
+        <input name="goal_weight_kg" type="number" step="0.1" value="{{ profile.goal_weight_kg if profile and profile.goal_weight_kg is not none else '' }}">
+
+        <div style="margin-top:12px;">
+          <button class="btn secondary" type="submit">Save goals</button>
+        </div>
+      </form>
+
+      <hr class="sep">
+
+      <h2>Quick notes</h2>
+      <ul class="checklist">
+        <li><input type="checkbox" name="quick_notes" value="Drink water" form="goalsForm"> <div>Drink water</div></li>
+        <li><input type="checkbox" name="quick_notes" value="Sleep 7–8h" form="goalsForm"> <div>Sleep 7–8h</div></li>
+        <li><input type="checkbox" name="quick_notes" value="Stretch 10 min" form="goalsForm"> <div>Stretch 10 min</div></li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}

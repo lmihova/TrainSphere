@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Home | TrainSphere{% endblock %}
+{% block banner_title %}Home{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <h2>Goals</h2>
+    
+
+    <!-- Pink sticky note -->
+    <div class="card" style="background:#f3ccd6;border-color:#efdae0;box-shadow:none;">
+      <div style="font-family:var(--serif);font-size:22px;text-align:center;margin-bottom:6px;">
+        Small steps lead to big differences
+      </div>
+
+     
+
+      <div style="color:#333;font-size:13px;margin-bottom:10px;">
+        {% if steps_goal and steps_goal.target_date %}
+          {{ steps_goal.target_date }}
+        {% else %}
+          {{ now_date if now_date else "—" }}
+        {% endif %}
+      </div>
+
+      <!-- Write inside the pink note -->
+      <form method="post">
+        <div style="display:grid;grid-template-columns: 1fr 1fr;gap:10px;">
+          <div>
+            <label>Metric</label>
+            <select name="metric">
+              <option value="steps">steps</option>
+              <option value="water">water</option>
+              <option value="calories">calories</option>
+              
+            </select>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns: 1fr 1fr;gap:10px;">        
+          <div>
+            <label>Unit</label>
+            <select name="target_unit">
+              <option value="steps/day">steps/day</option>
+              <option value="ml/day">ml/day</option>
+              <option value="kcal/day">kcal/day</option>
+              
+            </select>
+          </div>
+        </div>
+
+       
+
+        <div style="display:grid;grid-template-columns: 1fr 1fr;gap:10px;">
+          <div>
+            <label>Target</label>
+            <input name="target_value" type="number" min="1" placeholder="e.g. 5000" required>
+          </div>
+
+          
+        </div>
+
+        <label>Note (optional)</label>
+        <input name="note" placeholder="e.g. new routine">
+
+        <div style="margin-top:10px;">
+          <button class="btn secondary" type="submit">+ Save</button>
+        </div>
+      </form>
+    </div>
+
+    {% if recent_goals %}
+      <hr class="sep">
+      <h2 style="margin-bottom:8px;">Recent goals</h2>
+      {% for g in recent_goals %}
+        <div style="padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:#fff;margin-bottom:8px;">
+          <b>{{ g.metric }}</b> — {{ g.target_value }} {{ g.target_unit }}
+          {% if g.target_date %} • {{ g.target_date }}{% endif %}
+          {% if g.note %}<div class="small">Note: {{ g.note }}</div>{% endif %}
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  
+{% endblock %}

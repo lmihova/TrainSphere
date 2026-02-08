@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{% block title %}TrainSphere{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="{{ url_for('main.index') }}">
+        <span class="bow">🎀</span>
+        <span class="brand-name">TrainSphere</span>
+      </a>
+
+      <nav class="nav">
+        <a href="{{ url_for('main.index') }}" class="{% if active=='home' %}active{% endif %}">Home</a>
+        <a href="{{ url_for('profile.page') }}" class="{% if active=='profile' %}active{% endif %}">Profile</a>
+        <a href="{{ url_for('plans.page') }}" class="{% if active=='plans' %}active{% endif %}">Plans</a>
+        <a href="{{ url_for('progress.page') }}" class="{% if active=='progress' %}active{% endif %}">Progress</a>
+        <a href="{{ url_for('motivation.page') }}" class="{% if active=='motivation' %}active{% endif %}">Motivation</a>
+        <a href="{{ url_for('report.page') }}" class="{% if active=='report' %}active{% endif %}">Report</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="banner">
+    <div class="banner-inner">
+      <div class="banner-bow">🎀</div>
+      <h1 class="banner-title">{% block banner_title %}TrainSphere{% endblock %}</h1>
+    </div>
+  </div>
+
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+
+</body>
+</html>

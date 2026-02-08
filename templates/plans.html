@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Plans | TrainSphere{% endblock %}
+{% block banner_title %}Plans{% endblock %}
+
+{% block content %}
+  <div class="grid">
+    <div class="card">
+      <h2>Create plan</h2>
+      <p class="small">Create your own training plan.</p>
+
+      <form method="post" id="planForm">
+        <label>Workout type</label>
+        <select name="workout_type">
+          <option value="">-- select --</option>
+          <option>Cardio</option>
+          <option>Strength</option>
+          <option>Yoga</option>
+          <option>HIIT</option>
+        </select>
+
+        <label>Frequency per week</label>
+        <input name="frequency" type="number" min="1" max="14">
+
+        <label>Goal type</label>
+        <select name="goal_type">
+          <option value="">-- select --</option>
+          <option>Calories</option>
+          <option>Time (minutes)</option>
+        </select>
+
+        <label>Goal value</label>
+        <input name="goal_value" type="number" min="1">
+
+        <div style="margin-top:12px;">
+          <button class="btn pink" type="submit">Save</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Checklist</h2>
+      <p class="small">A simple session checklist.</p>
+
+      <ul class="checklist">
+        <li><input type="checkbox" name="checklist" value="Warm-up" form="planForm"> <div>Warm-up</div></li>
+        <li><input type="checkbox" name="checklist" value="Main workout" form="planForm"> <div>Main workout</div></li>
+        <li><input type="checkbox" name="checklist" value="Stretch" form="planForm"> <div>Stretch</div></li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}
