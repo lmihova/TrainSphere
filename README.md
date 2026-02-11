@@ -65,8 +65,8 @@ TrainSphere/
 │
 ├── app.py                # Main application entry point
 ├── requirements.txt      # Project dependencies
-├── static/               # CSS, JS, images
-├── templates/            # HTML templates
-├── database/             # Database files (if applicable)
+├── static/               # CSS
+├── templates/            # HTML pages
+├── database/             # Database files 
 └── README.md
 ```
