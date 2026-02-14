@@ -152,7 +152,7 @@ a:hover{
     margin:0 0 10px;
 }
     
-hr.sep{
+hr.separator{
     border:none;
     border-top:1px solid var(--line);
     margin:14px 0;

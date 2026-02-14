@@ -34,7 +34,7 @@ def init_db() -> None:
         )
         """)
 
-       #keep existing DBs working
+        # keep existing DBs working
         profile_cols = [r[1] for r in cur.execute("PRAGMA table_info(profile)").fetchall()]
         if "quick_notes_json" not in profile_cols:
             cur.execute("ALTER TABLE profile ADD COLUMN quick_notes_json TEXT")
@@ -145,6 +145,15 @@ def index():
         steps_goal=steps_goal,
         recent_goals=recent_goals,
     )
+
+
+# ✅ NEW: delete goal
+@main.route("/goals/delete/<int:goal_id>", methods=["POST"])
+def delete_goal(goal_id: int):
+    with get_db() as conn:
+        conn.execute("DELETE FROM goals WHERE id = ?", (goal_id,))
+        conn.commit()
+    return redirect(url_for("main.index"))
 
 
 app.register_blueprint(main)

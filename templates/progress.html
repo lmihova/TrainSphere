@@ -4,18 +4,27 @@
 
 {% block content %}
 
-
   <div class="card">
-    <h2>Log workout</h2>
-    <p class="small">Choose a workout template, edit sets/reps/weight, and save.</p>
+    {% if edit_workout %}
+      <h2>Edit workout</h2>
+      <p class="small">Update the workout and save changes.</p>
+    {% else %}
+      <h2>Log workout</h2>
+      <p class="small">Choose a workout template, edit sets/reps/weight, and save.</p>
+    {% endif %}
 
     <form method="post" id="workoutForm">
+      {% if edit_workout %}
+        <input type="hidden" name="workout_id" value="{{ edit_workout.id }}">
+      {% endif %}
+
       <label>Workout type</label>
       <select name="workout_type" id="workoutType" onchange="loadTemplate()">
         {% for key in workout_templates.keys() %}
-          <option value="{{ key }}">{{ key }}</option>
+          <option value="{{ key }}"
+            {% if edit_workout and edit_workout.workout_type == key %}selected{% endif %}
+          >{{ key }}</option>
         {% endfor %}
-      </div>
       </select>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
@@ -23,7 +32,9 @@
           <label>Category</label>
           <select name="category" id="workoutCategory">
             {% for c in categories %}
-              <option value="{{ c }}">{{ c }}</option>
+              <option value="{{ c }}"
+                {% if edit_workout and edit_workout.category == c %}selected{% endif %}
+              >{{ c }}</option>
             {% endfor %}
           </select>
         </div>
@@ -32,39 +43,78 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
         <div>
           <label>Duration (minutes)</label>
-          <input name="duration_minutes" id="workoutDuration" type="number" min="1" placeholder="e.g. 45">
+          <input name="duration_minutes" id="workoutDuration" type="number" min="1"
+                 placeholder="e.g. 45"
+                 value="{{ edit_workout.duration_minutes if edit_workout and edit_workout.duration_minutes is not none else '' }}">
         </div>
         <div>
           <label>Date</label>
-          <input name="workout_date" id="workoutDate" type="date">
+          <input name="workout_date" id="workoutDate" type="date"
+                 value="{{ edit_workout.workout_date if edit_workout else '' }}">
         </div>
       </div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
         <div>
           <label>Performance (1..10)</label>
-          <input name="performance_rating" id="workoutPerformance" type="number" min="1" max="10" placeholder="e.g. 8">
+          <input name="performance_rating" id="workoutPerformance" type="number" min="1" max="10"
+                 placeholder="e.g. 8"
+                 value="{{ edit_workout.performance_rating if edit_workout and edit_workout.performance_rating is not none else '' }}">
         </div>
         <div>
           <label>Feeling (1..10)</label>
-          <input name="feeling_rating" id="workoutFeeling" type="number" min="1" max="10" placeholder="e.g. 7">
+          <input name="feeling_rating" id="workoutFeeling" type="number" min="1" max="10"
+                 placeholder="e.g. 7"
+                 value="{{ edit_workout.feeling_rating if edit_workout and edit_workout.feeling_rating is not none else '' }}">
         </div>
       </div>
 
       <label>Notes</label>
-      <textarea name="notes" id="workoutNotes" placeholder="Add notes here..."></textarea>
+      <textarea name="notes" id="workoutNotes" placeholder="Add notes here...">{% if edit_workout %}{{ edit_workout.notes or '' }}{% endif %}</textarea>
 
       <hr class="sep">
 
       <h2>Exercises</h2>
-      <p class="small">You can edit or add rows.</p>
+      <p class="small">You can edit rows.</p>
 
-      <div id="exerciseRows"></div>
+      {% if edit_workout %}
+        <div id="exerciseRows" data-edit-mode="1">
+          {% for ex in edit_exercises %}
+            <div class="card" style="box-shadow:none;margin-top:10px;">
+              <label>Exercise name</label>
+              <input name="exercise_name[]" value="{{ ex.exercise_name }}" required>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+                <div>
+                  <label>Sets</label>
+                  <input name="sets[]" type="number" min="1" value="{{ ex.sets or '' }}">
+                </div>
+                <div>
+                  <label>Reps</label>
+                  <input name="reps[]" type="number" min="1" value="{{ ex.reps or '' }}">
+                </div>
+                <div>
+                  <label>Weight (kg)</label>
+                  <input name="weight_kg[]" type="number" step="0.5" value="{{ ex.weight_kg or '' }}">
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div id="exerciseRows" data-edit-mode="0"></div>
+      {% endif %}
 
       <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
-        <button type="button" class="btn secondary" onclick="addEmptyRow()">+ Add Exercise</button>
+        <!-- Add Exercise махнат изцяло -->
         <button type="button" class="btn" onclick="clearDraft()">Clear draft</button>
-        <button class="btn pink" type="submit">Finish</button>
+
+        {% if edit_workout %}
+          <button class="btn pink" type="submit">Save changes</button>
+          <a class="btn secondary" href="{{ url_for('progress.page') }}">Cancel</a>
+        {% else %}
+          <button class="btn pink" type="submit">Finish</button>
+        {% endif %}
       </div>
     </form>
   </div>
@@ -74,272 +124,78 @@
       <h2>Workouts</h2>
 
       <form method="get" class="workout-filters">
-  <div class="workout-filters-grid">
-    <div>
-      <label>Period</label>
-      <select name="period">
-        <option value="week" {% if filters.period=='week' %}selected{% endif %}>Last 7 days</option>
-        <option value="month" {% if filters.period=='month' %}selected{% endif %}>This month</option>
-      </select>
-    </div>
-
-    <div>
-      <label>Category</label>
-      <select name="category">
-        <option value="" {% if not filters.category %}selected{% endif %}>All</option>
-        {% for c in categories %}
-          <option value="{{ c }}" {% if filters.category==c %}selected{% endif %}>{{ c }}</option>
-        {% endfor %}
-      </select>
-    </div>
-  </div>
-
-  <div class="workout-filters-actions">
-    <button class="btn" type="submit">Apply filters</button>
-    <a class="btn secondary" href="{{ url_for('progress.page') }}">Reset</a>
-  </div>
-</form>
-
-      <div class="workout-history">
-      {% for w in recent %}
-        <div style="padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;margin-bottom:10px;">
-          <b>{{ w.workout_type }}</b>
-          {% if w.category %}<div class="small">category: {{ w.category }}</div>{% endif %}          <div class="small">
-            {% if w.duration_minutes %}{{ w.duration_minutes }} min · {% endif %}
-            performance={{ w.performance_rating or "-" }}/10 · feeling={{ w.feeling_rating or "-" }}/10
+        <div class="workout-filters-grid">
+          <div>
+            <label>Period</label>
+            <select name="period">
+              <option value="week" {% if filters.period=='week' %}selected{% endif %}>Last 7 days</option>
+              <option value="month" {% if filters.period=='month' %}selected{% endif %}>This month</option>
+            </select>
           </div>
 
-          {% if recent_ex[w.id] %}
-            <div class="small" style="margin-top:6px;">
-              {% for ex in recent_ex[w.id] %}
-                • {{ ex.exercise_name }} ({{ ex.sets }}x{{ ex.reps }}, {{ ex.weight_kg }}kg)<br>
+          <div>
+            <label>Category</label>
+            <select name="category">
+              <option value="" {% if not filters.category %}selected{% endif %}>All</option>
+              {% for c in categories %}
+                <option value="{{ c }}" {% if filters.category==c %}selected{% endif %}>{{ c }}</option>
               {% endfor %}
-            </div>
-          {% endif %}
-
-          {% if w.notes %}
-            <div class="small">📝 {{ w.notes }}</div>
-          {% endif %}
-          <div class="small" style="opacity:.6">{{ w.workout_date }}</div>
+            </select>
+          </div>
         </div>
-      {% endfor %}
+
+        <div class="workout-filters-actions">
+          <button class="btn" type="submit">Apply filters</button>
+          <a class="btn secondary" href="{{ url_for('progress.page') }}">Reset</a>
+        </div>
+      </form>
+
+      <div class="workout-history">
+        {% for w in recent %}
+          <div style="padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;margin-bottom:10px;">
+            <b>{{ w.workout_type }}</b>
+
+            {% if w.category %}
+              <div class="small">category: {{ w.category }}</div>
+            {% endif %}
+
+            <div class="small">
+              {% if w.duration_minutes %}{{ w.duration_minutes }} min · {% endif %}
+              performance={{ w.performance_rating or "-" }}/10 · feeling={{ w.feeling_rating or "-" }}/10
+            </div>
+
+            {% set ex_list = recent_ex.get(w.id) %}
+            {% if ex_list %}
+              <div class="small" style="margin-top:6px;">
+                {% for ex in ex_list %}
+                  • {{ ex.exercise_name }} ({{ ex.sets }}x{{ ex.reps }}, {{ ex.weight_kg }}kg)<br>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            {% if w.notes %}
+              <div class="small">📝 {{ w.notes }}</div>
+            {% endif %}
+
+            <div class="small" style="opacity:.6">{{ w.workout_date }}</div>
+
+            <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
+              <a class="btn secondary" href="{{ url_for('progress.page') }}?edit={{ w.id }}">Edit</a>
+
+              <form method="post" action="{{ url_for('progress.delete', workout_id=w.id) }}"
+                    onsubmit="return confirm('Delete this workout?');">
+                <button class="btn" type="submit">Delete</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
     </div>
   {% endif %}
 
-  <script>
-    const templates = JSON.parse(
-    document.getElementById("workout-templates-data").textContent
-    );
-    
-    const STORAGE_KEY = "trainsphere.selected_workout_type";
-    const DRAFT_KEY_PREFIX = "trainsphere.progress_draft.";
-
-    function deriveCategory(type) {
-      const t = (type || "").toLowerCase();
-      if (t.startsWith("strength")) return "Strength";
-      if (t.startsWith("cardio")) return "Cardio";
-      if (t.startsWith("hiit")) return "HIIT";
-      if (t.includes("yoga") || t.includes("mobility")) return "Mobility";
-      return "General";
-    }
-
-    function rowHTML(ex) {
-      const name = ex?.name ?? "";
-      const sets = ex?.sets ?? "";
-      const reps = ex?.reps ?? "";
-      const w = ex?.weight_kg ?? "";
-
-      return `
-        <div class="card" style="box-shadow:none;margin-top:10px;">
-          <label>Exercise name</label>
-          <input name="exercise_name[]" value="${name.replaceAll('"','&quot;')}" required>
-
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
-            <div>
-              <label>Sets</label>
-              <input name="sets[]" type="number" min="1" value="${sets}">
-            </div>
-            <div>
-              <label>Reps</label>
-              <input name="reps[]" type="number" min="1" value="${reps}">
-            </div>
-            <div>
-              <label>Weight (kg)</label>
-              <input name="weight_kg[]" type="number" step="0.5" value="${w}">
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function loadTemplate() {
-      const type = document.getElementById("workoutType").value;
-      try { 
-        localStorage.setItem(STORAGE_KEY, type); 
-      } 
-      catch (e) {}
-
-      const cat = document.getElementById("workoutCategory");
-      if (cat && !cat.dataset.userChanged) {
-        const derived = deriveCategory(type);
-        // If option exists, select it.
-        for (const opt of cat.options) {
-          if (opt.value === derived) { cat.value = derived; break; }
-        }
-      }
-      const container = document.getElementById("exerciseRows");
-      container.innerHTML = "";
-
-      const draft = readDraft(type);
-      if (draft && Array.isArray(draft.exercises) && draft.exercises.length) {
-        draft.exercises.forEach(ex => container.insertAdjacentHTML("beforeend", rowHTML(ex)));
-        restoreMeta(draft);
-      } else {
-        const list = templates[type] || [];
-        list.forEach(ex => container.insertAdjacentHTML("beforeend", rowHTML(ex)));
-        // keep meta clean when switching to a new type
-        restoreMeta(null);
-      }
-    }
-
-    function addEmptyRow() {
-      const container = document.getElementById("exerciseRows");
-      container.insertAdjacentHTML("beforeend", rowHTML({name:"", sets:"", reps:"", weight_kg:""}));
-      scheduleDraftSave();
-    }
-
-    function draftKey(type) {
-      return DRAFT_KEY_PREFIX + (type || "");
-    }
-
-    function readDraft(type) {
-      try {
-        const raw = localStorage.getItem(draftKey(type));
-        if (!raw) return null;
-        return JSON.parse(raw);
-      } catch (e) {
-        return null;
-      }
-    }
-
-    function writeDraft(type, data) {
-      try {
-        localStorage.setItem(draftKey(type), JSON.stringify(data));
-      } catch (e) {}
-    }
-
-    function clearDraft() {
-      const type = document.getElementById("workoutType").value;
-      try { localStorage.removeItem(draftKey(type)); } catch (e) {}
-      // reload template after clearing
-      loadTemplate();
-    }
-
-    function collectMeta() {
-      const meta = {};
-      meta.category = document.getElementById("workoutCategory")?.value || "";
-      meta.duration_minutes = document.querySelector('input[name="duration_minutes"]')?.value || "";
-      meta.performance_rating = document.querySelector('input[name="performance_rating"]')?.value || "";
-      meta.feeling_rating = document.querySelector('input[name="feeling_rating"]')?.value || "";
-      meta.notes = document.querySelector('textarea[name="notes"]')?.value || "";
-      return meta;
-    }
-
-    function restoreMeta(draft) {
-      // when draft is null -> clear meta inputs (but keep derived category behavior)
-      const catEl = document.getElementById("workoutCategory");
-      const dateEl = document.getElementById("workoutDate");
-      const durEl = document.querySelector('input[name="duration_minutes"]');
-      const perfEl = document.querySelector('input[name="performance_rating"]');
-      const feelEl = document.querySelector('input[name="feeling_rating"]');
-      const notesEl = document.querySelector('textarea[name="notes"]');
-
-      if (!draft) {
-        if (dateEl) dateEl.value = "";
-        if (durEl) durEl.value = "";
-        if (perfEl) perfEl.value = "";
-        if (feelEl) feelEl.value = "";
-        if (notesEl) notesEl.value = "";
-        return;
-      }
-
-      if (catEl && draft.category) {
-        // only set if option exists
-        for (const opt of catEl.options) {
-          if (opt.value === draft.category) { catEl.value = draft.category; break; }
-        }
-      }
-      if (durEl) durEl.value = draft.duration_minutes || "";
-      if (perfEl) perfEl.value = draft.performance_rating || "";
-      if (feelEl) feelEl.value = draft.feeling_rating || "";
-      if (notesEl) notesEl.value = draft.notes || "";
-      if (dateEl && draft.workout_date) dateEl.value = draft.workout_date;
-    }
-
-    function collectExercises() {
-      const names = Array.from(document.querySelectorAll('input[name="exercise_name[]"]')).map(x => x.value);
-      const sets = Array.from(document.querySelectorAll('input[name="sets[]"]')).map(x => x.value);
-      const reps = Array.from(document.querySelectorAll('input[name="reps[]"]')).map(x => x.value);
-      const w = Array.from(document.querySelectorAll('input[name="weight_kg[]"]')).map(x => x.value);
-
-      const ex = [];
-      for (let i = 0; i < names.length; i++) {
-        const n = (names[i] || "").trim();
-        if (!n && !sets[i] && !reps[i] && !w[i]) continue;
-        ex.push({
-          name: n,
-          sets: sets[i] || "",
-          reps: reps[i] || "",
-          weight_kg: w[i] || "",
-        });
-      }
-      return ex;
-    }
-
-    let draftTimer = null;
-    function scheduleDraftSave() {
-      if (draftTimer) clearTimeout(draftTimer);
-      draftTimer = setTimeout(saveDraftNow, 250);
-    }
-
-    function saveDraftNow() {
-      const type = document.getElementById("workoutType").value;
-      const data = {
-        ...collectMeta(),
-        exercises: collectExercises(),
-        saved_at: new Date().toISOString(),
-      };
-      writeDraft(type, data);
-    }
-
-    // Restore last selected workout type (keeps you on the same template even after changing pages)
-    (function restoreSelection() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved && templates[saved]) {
-          document.getElementById("workoutType").value = saved;
-        }
-      } catch (e) {}
-
-      // Mark if user changes category manually
-      const cat = document.getElementById("workoutCategory");
-      if (cat) {
-        cat.addEventListener('change', () => { cat.dataset.userChanged = '1'; });
-      }
-
-      // Auto-save draft on any input change.
-      const form = document.getElementById('workoutForm');
-      if (form) {
-        form.addEventListener('input', scheduleDraftSave);
-        form.addEventListener('change', scheduleDraftSave);
-        form.addEventListener('submit', () => {
-          // Clear draft when the workout is actually saved.
-          const type = document.getElementById("workoutType").value;
-          try { localStorage.removeItem(draftKey(type)); } catch (e) {}
-        });
-      }
-
-      loadTemplate();
-    })();
+  <script id="workout-templates-data" type="application/json">
+    {{ workout_templates | tojson }}
   </script>
+  <script src="{{ url_for('static', filename='progress.js') }}"></script>
+
 {% endblock %}
