@@ -18,13 +18,14 @@ TrainSphere is a Flask-based fitness tracker web application for logging workout
 git clone https://github.com/lmihova/TrainSphere.git
 cd TrainSphere
 
-2) Create a virtual environment
+### 2) Create a virtual environment
 
+```bash
 Windows (PowerShell):
 
 py -m venv .venv
 
-3) Activate the virtual environment
+### 3) Activate the virtual environment
 
 Windows (PowerShell):
 

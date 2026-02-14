@@ -52,14 +52,15 @@ a:hover{
 
 .banner-title{
     font-family:var(--serif);
-    font-size:46px;margin:0;
-    letter-spacing:.2px;
+    font-size:46px;
+    margin:0;
+    letter-spacing: 0;
 }
 
 .brand{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap: 5px;;
     font-weight:700;
 }
 
@@ -96,7 +97,7 @@ a:hover{
     padding:18px 16px;
     display:flex;
     align-items:center;
-    gap:14px;
+    gap:5px;
 }
     
 .banner-bow{
