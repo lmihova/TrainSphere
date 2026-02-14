@@ -44,15 +44,15 @@ def _compute_period(period: str):
     if p == "month":
         f = today.replace(day=1)
         if f.month == 12:
-            next_month = f.replace(year=f.year + 1, month=1)
+            next_month = f.replace(year=f.year + 1, month=1) # set to next month first, handle December correctly
         else:
             next_month = f.replace(month=f.month + 1)
         t = next_month - timedelta(days=1)
     else:
-        f = today - timedelta(days=6)
+        f = today - timedelta(days=6) # default to week (7-day period ending today)
         t = today
 
-    return f.isoformat(), t.isoformat()
+    return f.isoformat(), t.isoformat() #date object в string
 
 
 WORKOUT_TEMPLATES = {
@@ -96,7 +96,7 @@ def page():
         except:
             return default
 
-    # --- EDIT MODE via same page ---
+    
     edit_id_raw = request.args.get("edit")
     edit_id = None
     try:
@@ -148,7 +148,7 @@ def page():
                     ),
                 )
 
-                # Replace exercises (simple + reliable)
+                
                 conn.execute("DELETE FROM workout_exercises WHERE workout_id = ?", (workout_id,))
 
                 for i, name in enumerate(names):
@@ -164,7 +164,7 @@ def page():
                         (workout_id, name, s, r, w),
                     )
 
-            else:  # INSERT
+            else:  
                 cur = conn.execute(
                     """INSERT INTO workouts (workout_date, workout_type, category, duration_minutes, performance_rating, feeling_rating, notes)
                        VALUES (?, ?, ?, ?, ?, ?, ?)""",
@@ -224,7 +224,7 @@ def page():
             params,
         ).fetchall()
 
-        # ✅ load exercises for list
+        # load exercises for list
         recent_ex = {}
         if recent:
             ids = [r["id"] for r in recent]

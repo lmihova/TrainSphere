@@ -30,7 +30,7 @@ def page():
 
         with get_db() as conn:
             existing = conn.execute(
-                "SELECT * FROM profile ORDER BY id DESC LIMIT 1"
+                "SELECT * FROM profile ORDER BY id DESC LIMIT 1" #take the latest profile as the "current" one
             ).fetchone()
 
             if existing:
@@ -49,7 +49,8 @@ def page():
 
                 if merged["name"]:
                     conn.execute(
-                        """UPDATE profile
+                        #always have a single profile row - update the existing one instead of inserting new
+                        """UPDATE profile 
                            SET name=?, age=?, height_cm=?, weight_kg=?, goal_text=?, goal_weight_kg=?, quick_notes_json=?
                            WHERE id=?""",
                         (

@@ -73,7 +73,7 @@
               {% if g.note %}<div class="small">Note: {{ g.note }}</div>{% endif %}
             </div>
 
-            <!-- ✅ Delete button -->
+            <!-- Delete button -->
             <form method="post" action="{{ url_for('main.delete_goal', goal_id=g.id) }}"
                   onsubmit="return confirm('Delete this goal?');">
               <button class="btn" type="submit">Delete</button>

@@ -5,7 +5,6 @@ import io
 import csv
 import json
 
-# Ако ползваш reportlab за PDF
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
