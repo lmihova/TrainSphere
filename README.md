@@ -22,9 +22,9 @@ cd TrainSphere
 
 ---
 
-2) Create a virtual environment
+### 2) Create a virtual environment
 
-Windows (PowerShell):
+**Windows (PowerShell)**
 
 ```bash
 py -m venv .venv
@@ -32,7 +32,7 @@ py -m venv .venv
 
 ---
 
-3) Activate the virtual environment
+### 3) Activate the virtual environment
 
 **Windows (PowerShell)**
 
