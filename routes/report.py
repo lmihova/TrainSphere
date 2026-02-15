@@ -4,6 +4,7 @@ from pathlib import Path
 import io
 import csv
 import json
+from typing import List
 
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
@@ -102,13 +103,13 @@ def fetch_report(limit_workouts: int = 20):
             ).fetchall()
 
     # Parse checked checklist / quick notes (stored as JSON arrays)
-    checklist = []
+    checklist: list[str] = []
     if plan and "checklist_json" in plan.keys() and plan["checklist_json"]:
         try:
             checklist = json.loads(plan["checklist_json"]) or []
         except Exception:
             checklist = []
-    quick_notes = []
+    quick_notes: list[str] = []
     if profile and "quick_notes_json" in profile.keys() and profile["quick_notes_json"]:
         try:
             quick_notes = json.loads(profile["quick_notes_json"]) or []

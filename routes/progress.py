@@ -149,6 +149,7 @@ def page():
                 )
 
                 
+                #? е placeholder (parameter marker) в SQLite
                 conn.execute("DELETE FROM workout_exercises WHERE workout_id = ?", (workout_id,))
 
                 for i, name in enumerate(names):
